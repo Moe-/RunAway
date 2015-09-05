@@ -1,6 +1,8 @@
 Gamejam
 
 
+Setting: Supermarket
+
 Basics
 Figur kann nur springen
 Läuft immer nach rechts 
@@ -43,5 +45,7 @@ Sounds
 - Hund frisst Wurst
 - Mann schreit
 - Musik (wird schneller)
+- Supermarktgeräusche 
+- 
 
 
