@@ -1,8 +1,9 @@
 require('utils')
-
+require('world')
 
 gScreenWidth = 0
 gScreenHeight = 0
+gWorld = {}
 
 function love.load()
 	if arg[#arg] == "-debug" then 
@@ -16,15 +17,15 @@ function love.load()
 end
 
 function love.update(dt)
-
+	gWorld:update(dt)
 end
 
 function love.draw()
-	love.graphics.print("Test", 200, 200)
+	gWorld:draw()
 end
 
 function resetGame()
-
+	gWorld = World:new()
 end
 
 function love.mousepressed(x, y, button)
