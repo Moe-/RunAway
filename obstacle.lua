@@ -17,11 +17,12 @@ function Obstacle:__init(world, x, y)
   self.height = self.image:getHeight()
 	
 	self.physics = {}
-	self.physics.body = love.physics.newBody(world, x, y, "dynamic")
+	self.physics.body = love.physics.newBody(world, x, y - self.height/2, "static")
   --self.physics.shape = love.physics.newCircleShape(16)
 	self.physics.shape = love.physics.newRectangleShape(0, 0, self.width, self.height)
   self.physics.fixture = love.physics.newFixture(self.physics.body, self.physics.shape, 4)
 	self.physics.body:setUserData(self)
+	self.physics.body:setFixedRotation(true)
 	self.physics.fixture:setUserData(self)
 	
 	self.physics.fixture:setRestitution(0.3)
