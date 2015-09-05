@@ -32,7 +32,7 @@ function Player:getPosition()
 end
 
 function Player:update(dt)
-	self.physics.body:applyForce(500, 0)
+	self.physics.body:applyForce(500 * math.pow(0.9, self.sausages), 0)
 end
 
 function Player:getSize()
