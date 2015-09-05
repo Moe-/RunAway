@@ -18,3 +18,21 @@ Wurst hochwerfen (Gefahr: Man wirft über den Hund -> Munition verloren)
 Fresshöhe: Hund springt hoch, um nach Wurst zu schnappen?
 Plattformen? 
 Hindernisse
+
+Grafik-Assets
+- Hund
+- Figur 
+- Würste
+- Boden 
+- Hintergrund 
+- Wurst-Counter (Digital-Uhr aus Würsten zusammengesetzt)
+
+
+Animationen
+- Hund laufen
+- Mensch laufen
+- Mensch springen
+- Mensch lässt Wurst fallen
+- Hund frisst Wurst
+- Hund beisst/frisst Mensch
+- 
