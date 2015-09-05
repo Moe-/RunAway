@@ -1,10 +1,11 @@
-class "Dog" {
+class "Sausage" {
+
 }
 
-function Dog:__init(world, x, y)
+function Sausage:__init(world, x, y)
 	self.world = world
 	
-  self.image = love.graphics.newImage("gfx/dog.png")
+  self.image = love.graphics.newImage("gfx/sausage.png")
   self.image:setWrap("repeat", "repeat")
   self.quad = love.graphics.newQuad(0, 0, self.image:getWidth(), self.image:getHeight(), self.image:getWidth(), self.image:getHeight())
   self.width = self.image:getWidth()
@@ -16,48 +17,42 @@ function Dog:__init(world, x, y)
 	self.physics.shape = love.physics.newRectangleShape(0, 0, self.width, self.height)
   self.physics.fixture = love.physics.newFixture(self.physics.body, self.physics.shape, 2)
 	self.physics.body:setUserData(self)
+	self.physics.body:setMass(0.0)
 	self.physics.fixture:setUserData(self)
 	
 	self.physics.fixture:setRestitution(0.3)
-	
-	self.strength = 1
-	
+
 end
 
-function Dog:draw(offsetx, offsety)
+function Sausage:draw(offsetx, offsety)
   love.graphics.draw(self.image, self.quad, self.physics.body:getX() - self.width/2 - offsetx, self.physics.body:getY() - self.height/2 - offsety)
 end
 
-function Dog:getPosition()
+function Sausage:getPosition()
 	return self.physics.body:getX(), self.physics.body:getY()
 end
 
-function Dog:update(dt)
-	self.physics.body:applyForce(500 * math.pow(1.2, self.strength - 1), 0)
+function Sausage:update(dt)
+
 end
 
-function Dog:getSize()
+function Sausage:getSize()
   return self.width, self.height
 end
 
-function Dog:getWidth()
+function Sausage:getWidth()
   return self.width
 end
 
-function Dog:getHeight()
+function Sausage:getHeight()
   return self.height
 end
 
-function Dog:getType()
-	return "Dog"
+function Sausage:getType()
+	return "Sausage"
 end
 
-function Dog:eatSausage(sausage)
-	self.physics.body:applyForce(-500 * math.pow(1.2, self.strength), 0)
-	self.strength = self.strength + 1
-end
-
-function Dog:destroy()
+function Sausage:destroy()
 	self.physics.body:destroy()
 	self.physics.fixture:destroy()
 end
