@@ -51,3 +51,8 @@ end
 function Sausage:getType()
 	return "Sausage"
 end
+
+function Sausage:destroy()
+	self.physics.body:destroy()
+	self.physics.fixture:destroy()
+end

@@ -63,3 +63,12 @@ end
 function Player:getType()
 	return "Player"
 end
+
+function Player:takeSausage(sausageItem)
+	self.sausages = self.sausages + 1
+end
+
+function Player:destroy()
+	self.physics.body:destroy()
+	self.physics.fixture:destroy()
+end

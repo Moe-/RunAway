@@ -2,6 +2,7 @@ require('background')
 require('dog')
 require('player')
 require('sausage')
+require('sausageitem')
 
 class "World" {
   width = 0;
@@ -9,6 +10,8 @@ class "World" {
   offsetx = 0;
   offsety = 0;
 	lost = false;
+	
+	numberSausages = 10;
 }
 
 function World:__init(width, height)
@@ -23,6 +26,7 @@ function World:__init(width, height)
 	self.ground.fixture:setFriction(0.0)
 	
 	self.sausages = {}
+	self.sausageItems = {}
 	
 	self.width = width
 	self.height = height
@@ -51,8 +55,17 @@ function World:update(dt)
 		-- dog overtakes human - what to do?
 	end
 	
+	for i, v in pairs(self.sausageItems) do
+		v:update(dt)
+		local sposx, sposy = v:getPosition()
+		if getDistance(posx, posy, sposx, sposy) > 5000 then
+			self.sausageItems[i] = nil
+		end
+	end
 	
-	--self.offsety = posy - 3*self.height/4
+	while self.numberSausages > #self.sausageItems do
+		table.insert(self.sausageItems, SausageItem:new(self.world, posx + 500 + math.random(4500), math.random(50, 400)))
+	end
 end
 
 function World:draw()
@@ -61,6 +74,10 @@ function World:draw()
 	self.dog:draw(self.offsetx, self.offsety)
 	
 	for i,v in pairs(self.sausages) do
+		v:draw(self.offsetx, self.offsety)
+	end
+	
+	for i, v in pairs(self.sausageItems) do
 		v:draw(self.offsetx, self.offsety)
 	end
 	
@@ -90,6 +107,7 @@ function World:dogEatsSausage(dog, sausage)
 		if v == sausage then
 			self.sausages[i] = nil
 			dog:eatSausage(sausage)
+			sausage:destroy()
 			break
 		end
 	end
@@ -97,6 +115,17 @@ end
 
 function World:dogEatsPlayer(dog, player)
 	self.lost = true
+end
+
+function World:playerGetsSausage(player, sausageItem)
+	for i,v in pairs(self.sausageItems) do
+		if v == sausageItem then
+			self.sausageItems[i] = nil
+			player:takeSausage(sausageItem)
+			sausageItem:destroy()
+			break
+		end
+	end
 end
 
 function beginContact(a, b, coll)
@@ -111,6 +140,10 @@ function beginContact(a, b, coll)
 			gWorld:dogEatsPlayer(bUser, aUser)
 		elseif bUser:getType() == "Player" and aUser:getType() == "Dog" then
 			gWorld:dogEatsPlayer(aUser, bUser)
+		elseif aUser:getType() == "Player" and bUser:getType() == "SausageItem" then
+			gWorld:playerGetsSausage(aUser, bUser)
+		elseif bUser:getType() == "Player" and aUser:getType() == "SausageItem" then
+			gWorld:playerGetsSausage(bUser, aUser)
 		end
 	end
 end
