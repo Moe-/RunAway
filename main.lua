@@ -1,10 +1,12 @@
 require('utils')
 require('world')
 require('menu')
+require('credits')
 
 gScreenWidth = 0
 gScreenHeight = 0
 gWorld = {}
+gCredits = {}
 gState = "menu"
 
 function love.load()
@@ -23,6 +25,8 @@ end
 function love.update(dt)
 	if gState == "menu" then
 		gMenu:update(dt)
+	elseif gState == "credits" then
+		gCredits:update(dt)
 	else
 		gWorld:update(dt)
 	end
@@ -31,6 +35,8 @@ end
 function love.draw()
 	if gState == "menu" then
 		gMenu:draw()
+	elseif gState == "credits" then
+		gCredits:draw()
 	else
 		gWorld:draw()
 	end
@@ -39,11 +45,14 @@ end
 function resetGame()
 	gWorld = World:new(gScreenWidth, gScreenHeight)
 	gMenu = Menu:new(gScreenWidth, gScreenHeight)
+	gCredits = Credits:new(gScreenWidth, gScreenHeight)
 end
 
 function love.mousepressed(x, y, button)
 	if gState == "menu" then
 		gMenu:mouseHit(x, y, button)
+	elseif gState == "credits" then
+		gCredits:mouseHit(x, y, button)
 	end
 end
 
