@@ -49,7 +49,7 @@ end
 
 function Player:jump()
 	if #self.physics.body:getContactList() > 0 then
-		self.physics.body:applyLinearImpulse(400, 12000)
+		self.physics.body:applyLinearImpulse(400, 5000)
 	end
 end
 

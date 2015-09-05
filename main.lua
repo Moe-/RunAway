@@ -2,6 +2,7 @@ require('utils')
 require('world')
 require('menu')
 require('credits')
+require('lib/postshader')
 
 gScreenWidth = 0
 gScreenHeight = 0
@@ -33,6 +34,8 @@ function love.update(dt)
 end
 
 function love.draw()
+	love.postshader.setBuffer("render")
+
 	if gState == "menu" then
 		gMenu:draw()
 	elseif gState == "credits" then
@@ -40,6 +43,10 @@ function love.draw()
 	else
 		gWorld:draw()
 	end
+
+	love.postshader.addEffect("tiltshift", 2, 2)
+	love.postshader.addEffect("scanlines")
+	love.postshader.draw()
 end
 
 function resetGame()
