@@ -42,6 +42,7 @@ function love.keypressed(key)
     s:encode("pic" .. gScreenCount .. ".png", 'png')
     gScreenCount = gScreenCount + 1
 	end
+	gWorld:keyPressed(key)
 end
 
 function love.keyreleased(key)
@@ -50,4 +51,5 @@ function love.keyreleased(key)
 	elseif key == 'r' then
 		resetGame()
   end
+	gWorld:keyReleased(key)
 end

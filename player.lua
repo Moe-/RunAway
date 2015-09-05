@@ -1,9 +1,8 @@
 class "Player" {
-	world = {};
-	physics = {};
+	sausages = 5;
 }
 
-function Player:__init(world)
+function Player:__init(world, x, y)
 	self.world = world
 	
 	self.image = love.graphics.newImage("gfx/human.png")
@@ -12,7 +11,8 @@ function Player:__init(world)
   self.width = self.image:getWidth()
   self.height = self.image:getHeight()
 	
-  self.physics.body = love.physics.newBody(world, 225, 175, "dynamic")
+	self.physics = {}
+  self.physics.body = love.physics.newBody(world, x, y, "dynamic")
   --self.physics.shape = love.physics.newCircleShape(32)
   self.physics.shape = love.physics.newRectangleShape(0, 0, self.width, self.height)
 	self.physics.fixture = love.physics.newFixture(self.physics.body, self.physics.shape, 3)
@@ -29,7 +29,7 @@ function Player:getPosition()
 end
 
 function Player:update(dt)
-	self.physics.body:applyForce(2000, 0)
+	self.physics.body:applyForce(1000, 0)
 end
 
 function Player:getSize()
@@ -42,4 +42,17 @@ end
 
 function Player:getHeight()
   return self.height
+end
+
+function Player:jump()
+	if #self.physics.body:getContactList() > 0 then
+		self.physics.body:applyLinearImpulse(400, 12000)
+	end
+end
+
+function Player:sausageDrop(world, sausages)
+	if self.sausages > 0 then
+		table.insert(sausages, Sausage:new(world, self.physics.body:getX() - self.width, self.physics.body:getY()))
+		self.sausages = self.sausages - 1
+	end
 end
