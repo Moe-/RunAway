@@ -11,6 +11,8 @@ Wurst sammeln durch berühren
 Hund frisst (Wie lange frisst Hund?)
 Hunde wächst durch Wurst -> Wird schneller -> Frisst schneller?
 
+Highscore: Time or distance?
+
 
 
 Evtl. 
@@ -35,4 +37,11 @@ Animationen
 - Mensch lässt Wurst fallen
 - Hund frisst Wurst
 - Hund beisst/frisst Mensch
-- 
+
+Sounds
+- Hundebellen
+- Hund frisst Wurst
+- Mann schreit
+- Musik (wird schneller)
+
+
