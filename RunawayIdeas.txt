@@ -1,0 +1,20 @@
+Gamejam
+
+
+Basics
+Figur kann nur springen
+Läuft immer nach rechts 
+Hund rennt auch nach rechts
+Jede Wurst macht 5% langsamer
+Wurst fallen lassen
+Wurst sammeln durch berühren
+Hund frisst (Wie lange frisst Hund?)
+Hunde wächst durch Wurst -> Wird schneller -> Frisst schneller?
+
+
+
+Evtl. 
+Wurst hochwerfen (Gefahr: Man wirft über den Hund -> Munition verloren)
+Fresshöhe: Hund springt hoch, um nach Wurst zu schnappen?
+Plattformen? 
+Hindernisse
