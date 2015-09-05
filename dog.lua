@@ -20,6 +20,8 @@ function Dog:__init(world, x, y)
 	
 	self.physics.fixture:setRestitution(0.3)
 	
+	self.strength = 1
+	
 end
 
 function Dog:draw(offsetx, offsety)
@@ -31,7 +33,7 @@ function Dog:getPosition()
 end
 
 function Dog:update(dt)
-	self.physics.body:applyForce(1000, 0)
+	self.physics.body:applyForce(500 * math.pow(1.2, self.strength - 1), 0)
 end
 
 function Dog:getSize()
@@ -48,4 +50,9 @@ end
 
 function Dog:getType()
 	return "Dog"
+end
+
+function Dog:eatSausage(sausage)
+	self.physics.body:applyForce(-500 * math.pow(1.2, self.strength), 0)
+	self.strength = self.strength + 1
 end

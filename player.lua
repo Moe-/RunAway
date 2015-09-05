@@ -32,7 +32,7 @@ function Player:getPosition()
 end
 
 function Player:update(dt)
-	self.physics.body:applyForce(1000, 0)
+	self.physics.body:applyForce(500, 0)
 end
 
 function Player:getSize()

@@ -20,6 +20,7 @@ function World:__init(width, height)
   self.ground.body = love.physics.newBody(self.world, 0, 250/2)
   self.ground.shape = love.physics.newRectangleShape(0, 250, 10000000, 50)
   self.ground.fixture = love.physics.newFixture(self.ground.body, self.ground.shape)
+	self.ground.fixture:setFriction(0.0)
 	
 	self.sausages = {}
 	
@@ -47,7 +48,7 @@ function World:update(dt)
 	local dposx, dposy = self.player:getPosition()
 	
 	if dposx >= posx then
-		self.lost = false
+		-- dog overtakes human - what to do?
 	end
 	
 	
@@ -64,7 +65,9 @@ function World:draw()
 	end
 	
 	if self.lost then
-		love.graphics.print("Lost", 50, 50)
+		love.graphics.setColor(255, 0, 0, 255)
+		love.graphics.print("Lost", 50, 50, 0, 5)
+		love.graphics.setColor(255, 255, 255, 255)
 	end
 end
 
@@ -86,20 +89,28 @@ function World:dogEatsSausage(dog, sausage)
 	for i,v in pairs(self.sausages) do
 		if v == sausage then
 			self.sausages[i] = nil
+			dog:eatSausage(sausage)
 			break
 		end
 	end
+end
+
+function World:dogEatsPlayer(dog, player)
+	self.lost = true
 end
 
 function beginContact(a, b, coll)
 	aUser = a:getUserData()
 	bUser = b:getUserData()
 	if aUser ~= nil and bUser ~= nil then
-		print(aUser:getType(), bUser:getType())
 		if aUser:getType() == "Sausage" and bUser:getType() == "Dog" then
 			gWorld:dogEatsSausage(bUser, aUser)
 		elseif bUser:getType() == "Sausage" and aUser:getType() == "Dog" then
 			gWorld:dogEatsSausage(aUser, bUser)
+		elseif aUser:getType() == "Player" and bUser:getType() == "Dog" then
+			gWorld:dogEatsPlayer(bUser, aUser)
+		elseif bUser:getType() == "Player" and aUser:getType() == "Dog" then
+			gWorld:dogEatsPlayer(aUser, bUser)
 		end
 	end
 end
