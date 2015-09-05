@@ -15,6 +15,9 @@ function Dog:__init(world, x, y)
   --self.physics.shape = love.physics.newCircleShape(16)
 	self.physics.shape = love.physics.newRectangleShape(0, 0, self.width, self.height)
   self.physics.fixture = love.physics.newFixture(self.physics.body, self.physics.shape, 2)
+	self.physics.body:setUserData(self)
+	self.physics.fixture:setUserData(self)
+	
 	self.physics.fixture:setRestitution(0.3)
 	
 end
@@ -41,4 +44,8 @@ end
 
 function Dog:getHeight()
   return self.height
+end
+
+function Dog:getType()
+	return "Dog"
 end

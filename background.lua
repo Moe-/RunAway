@@ -32,3 +32,7 @@ end
 function Background:getHeight()
   return self.height
 end
+
+function Background:getType()
+	return "Background"
+end

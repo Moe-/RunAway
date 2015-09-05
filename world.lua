@@ -14,6 +14,7 @@ class "World" {
 function World:__init(width, height)
 	love.physics.setMeter(64) --the height of a meter our worlds will be 64px
   self.world = love.physics.newWorld(0, 9.81*64, true)
+	self.world:setCallbacks(beginContact, endContact, preSolve, postSolve)
 	
 	self.ground = {}
   self.ground.body = love.physics.newBody(self.world, 0, 250/2)
@@ -36,7 +37,6 @@ function World:update(dt)
 	self.player:update(dt)
 	self.dog:update(dt)
 	
-	print(#self.sausages)
 	for i,v in pairs(self.sausages) do
 		v:update(dt)
 	end
@@ -80,4 +80,38 @@ end
 
 function World:keyReleased()
 	
+end
+
+function World:dogEatsSausage(dog, sausage)
+	for i,v in pairs(self.sausages) do
+		if v == sausage then
+			self.sausages[i] = nil
+			break
+		end
+	end
+end
+
+function beginContact(a, b, coll)
+	aUser = a:getUserData()
+	bUser = b:getUserData()
+	if aUser ~= nil and bUser ~= nil then
+		print(aUser:getType(), bUser:getType())
+		if aUser:getType() == "Sausage" and bUser:getType() == "Dog" then
+			gWorld:dogEatsSausage(bUser, aUser)
+		elseif bUser:getType() == "Sausage" and aUser:getType() == "Dog" then
+			gWorld:dogEatsSausage(aUser, bUser)
+		end
+	end
+end
+ 
+function endContact(a, b, coll)
+ 
+end
+ 
+function preSolve(a, b, coll)
+ 
+end
+ 
+function postSolve(a, b, coll, normalimpulse1, tangentimpulse1, normalimpulse2, tangentimpulse2)
+ 
 end

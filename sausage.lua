@@ -16,12 +16,14 @@ function Sausage:__init(world, x, y)
   --self.physics.shape = love.physics.newCircleShape(16)
 	self.physics.shape = love.physics.newRectangleShape(0, 0, self.width, self.height)
   self.physics.fixture = love.physics.newFixture(self.physics.body, self.physics.shape, 2)
-	self.physics.fixture:setRestitution(0.3)
+	self.physics.body:setUserData(self)
+	self.physics.fixture:setUserData(self)
 	
+	self.physics.fixture:setRestitution(0.3)
+
 end
 
 function Sausage:draw(offsetx, offsety)
-	print("x", self.physics.body:getX())
   love.graphics.draw(self.image, self.quad, self.physics.body:getX() - self.width/2 - offsetx, self.physics.body:getY() - self.height/2 - offsety)
 end
 
@@ -43,4 +45,8 @@ end
 
 function Sausage:getHeight()
   return self.height
+end
+
+function Sausage:getType()
+	return "Sausage"
 end

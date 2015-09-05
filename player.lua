@@ -16,8 +16,11 @@ function Player:__init(world, x, y)
   --self.physics.shape = love.physics.newCircleShape(32)
   self.physics.shape = love.physics.newRectangleShape(0, 0, self.width, self.height)
 	self.physics.fixture = love.physics.newFixture(self.physics.body, self.physics.shape, 3)
-	self.physics.fixture:setRestitution(0.3)	
+	self.physics.body:setUserData(self)
+	self.physics.fixture:setUserData(self)
   
+	self.physics.fixture:setRestitution(0.3)
+	
 end
 
 function Player:draw(offsetx, offsety)
@@ -55,4 +58,8 @@ function Player:sausageDrop(world, sausages)
 		table.insert(sausages, Sausage:new(world, self.physics.body:getX() - self.width, self.physics.body:getY()))
 		self.sausages = self.sausages - 1
 	end
+end
+
+function Player:getType()
+	return "Player"
 end
