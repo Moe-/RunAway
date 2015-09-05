@@ -9,6 +9,7 @@ class "World" {
   height = 0;
   offsetx = 0;
   offsety = 0;
+	timePassed = 0;
 	lost = false;
 	
 	numberSausages = 10;
@@ -33,6 +34,10 @@ function World:__init(width, height)
   self.background = Background:new(width, height)
 	self.player = Player:new(self.world, 300, 150)
 	self.dog = Dog:new(self.world, 50, 150)
+	
+	self.music = love.audio.newSource('sfx/fast_paced.ogg', 'static')
+	self.music:setLooping(true)
+	self.music:play()
 end
 
 function World:update(dt)
@@ -66,6 +71,10 @@ function World:update(dt)
 	while self.numberSausages > #self.sausageItems do
 		table.insert(self.sausageItems, SausageItem:new(self.world, posx + 500 + math.random(4500), math.random(50, 400)))
 	end
+	
+	if self.lost == false then
+		self.timePassed = self.timePassed + dt
+	end
 end
 
 function World:draw()
@@ -80,6 +89,10 @@ function World:draw()
 	for i, v in pairs(self.sausageItems) do
 		v:draw(self.offsetx, self.offsety)
 	end
+	
+	love.graphics.setColor(0, 255, 0, 255)
+	love.graphics.print("You survived " .. math.ceil(0.5 + 1000 * self.timePassed) / 1000 .. " seconds", 50, self.height - 50, 0, 0.75)
+	love.graphics.setColor(255, 255, 255, 255)
 	
 	if self.lost then
 		love.graphics.setColor(255, 0, 0, 255)
