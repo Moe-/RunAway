@@ -53,7 +53,7 @@ function Dog:getType()
 end
 
 function Dog:eatSausage(sausage)
-	self.physics.body:applyForce(-500 * math.pow(1.2, self.strength), 0)
+	self.physics.body:applyForce(-1250 * math.pow(1.2, self.strength), 0)
 	self.strength = self.strength + 1
 end
 

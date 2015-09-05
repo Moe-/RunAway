@@ -34,7 +34,7 @@ function World:__init(width, height)
 	self.player = Player:new(self.world, 300, 150)
 	self.dog = Dog:new(self.world, 50, 150)
 	
-	self.music = love.audio.newSource('sfx/fast_paced07.ogg', 'static')
+	self.music = love.audio.newSource('sfx/fast_paced.ogg', 'static')
 	self.music:setLooping(true)
 	self.music:play()
 end
