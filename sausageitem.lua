@@ -19,6 +19,7 @@ function SausageItem:__init(world, x, y)
   self.physics.fixture = love.physics.newFixture(self.physics.body, self.physics.shape, 2)
 	self.physics.body:setUserData(self)
 	self.physics.body:setMass(0.0)
+	self.physics.body:setFixedRotation(true)
 	self.physics.fixture:setUserData(self)
 	self.physics.fixture:setSensor(true)
 	

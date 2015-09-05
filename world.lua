@@ -27,6 +27,7 @@ function World:__init(width, height)
   self.ground.shape = love.physics.newRectangleShape(0, 250, 10000000, 50)
   self.ground.fixture = love.physics.newFixture(self.ground.body, self.ground.shape)
 	self.ground.fixture:setFriction(0.0)
+	self.ground.body:setFixedRotation(true)
 	
 	self.sausages = {}
 	self.sausageItems = {}
@@ -48,7 +49,7 @@ function World:update(dt)
 	
 	self.background:update(dt)
 	self.player:update(dt)
-	self.dog:update(dt)
+	self.dog:update(dt, self.obstacles)
 	
 	for i,v in pairs(self.sausages) do
 		v:update(dt)

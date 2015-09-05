@@ -1,4 +1,5 @@
 class "Dog" {
+	nextJump = 0.0;
 }
 
 function Dog:__init(world, x, y)
@@ -16,6 +17,7 @@ function Dog:__init(world, x, y)
 	self.physics.shape = love.physics.newRectangleShape(0, 0, self.width, self.height)
   self.physics.fixture = love.physics.newFixture(self.physics.body, self.physics.shape, 2)
 	self.physics.body:setUserData(self)
+	self.physics.body:setFixedRotation(true)
 	self.physics.fixture:setUserData(self)
 	
 	self.physics.fixture:setRestitution(0.3)
@@ -32,8 +34,21 @@ function Dog:getPosition()
 	return self.physics.body:getX(), self.physics.body:getY()
 end
 
-function Dog:update(dt)
+function Dog:update(dt, obstacles)
 	self.physics.body:applyForce(500 * math.pow(1.2, self.strength - 1), 0)
+	
+	self.nextJump = self.nextJump - dt
+	if self.nextJump <= 0 then
+		local posx, posy = self:getPosition()
+		for i,v in pairs(obstacles) do
+			local oposx, oposy = v:getPosition()
+			if getDistance(posx, posy, oposx, oposy) < 300 then
+				self.physics.body:applyLinearImpulse(0, 8000)
+				self.nextJump = 2.0
+				break
+			end
+		end
+	end
 end
 
 function Dog:getSize()
