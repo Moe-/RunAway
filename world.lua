@@ -23,8 +23,8 @@ function World:__init(width, height)
 	self.world:setCallbacks(beginContact, endContact, preSolve, postSolve)
 	
 	self.ground = {}
-  self.ground.body = love.physics.newBody(self.world, 0, 250/2)
-  self.ground.shape = love.physics.newRectangleShape(0, 250, 10000000, 50)
+  self.ground.body = love.physics.newBody(self.world, 0, 300/2)
+  self.ground.shape = love.physics.newRectangleShape(0, 300, 10000000, 50)
   self.ground.fixture = love.physics.newFixture(self.ground.body, self.ground.shape)
 	self.ground.fixture:setFriction(0.0)
 	self.ground.body:setFixedRotation(true)
@@ -89,7 +89,7 @@ function World:update(dt)
 	end
 	
 	while self.numberObstacles > #self.obstacles do
-		table.insert(self.obstacles, Obstacle:new(self.world, posx + 500 + math.random(4500), math.random(50, 400)))
+		table.insert(self.obstacles, Obstacle:new(self.world, posx + 500 + math.random(4500), 425))
 	end
 	
 	if self.lost == false then
