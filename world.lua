@@ -3,6 +3,7 @@ require('dog')
 require('player')
 require('sausage')
 require('sausageitem')
+require('obstacle')
 
 class "World" {
   width = 0;
@@ -13,6 +14,7 @@ class "World" {
 	lost = false;
 	
 	numberSausages = 10;
+	numberObstacles = 10;
 }
 
 function World:__init(width, height)
@@ -28,6 +30,7 @@ function World:__init(width, height)
 	
 	self.sausages = {}
 	self.sausageItems = {}
+	self.obstacles = {}
 	
 	self.width = width
 	self.height = height
@@ -60,6 +63,7 @@ function World:update(dt)
 		-- dog overtakes human - what to do?
 	end
 	
+	-- sausages update and respawn
 	for i, v in pairs(self.sausageItems) do
 		v:update(dt)
 		local sposx, sposy = v:getPosition()
@@ -70,6 +74,19 @@ function World:update(dt)
 	
 	while self.numberSausages > #self.sausageItems do
 		table.insert(self.sausageItems, SausageItem:new(self.world, posx + 500 + math.random(4500), math.random(50, 400)))
+	end
+	
+	-- obstacles update and respawn
+	for i, v in pairs(self.obstacles) do
+		v:update(dt)
+		local sposx, sposy = v:getPosition()
+		if getDistance(posx, posy, sposx, sposy) > 5000 then
+			self.obstacles[i] = nil
+		end
+	end
+	
+	while self.numberObstacles > #self.obstacles do
+		table.insert(self.obstacles, Obstacle:new(self.world, posx + 500 + math.random(4500), math.random(50, 400)))
 	end
 	
 	if self.lost == false then
@@ -87,6 +104,10 @@ function World:draw()
 	end
 	
 	for i, v in pairs(self.sausageItems) do
+		v:draw(self.offsetx, self.offsety)
+	end
+	
+	for i, v in pairs(self.obstacles) do
 		v:draw(self.offsetx, self.offsety)
 	end
 	
