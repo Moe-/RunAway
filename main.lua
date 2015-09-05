@@ -25,7 +25,7 @@ function love.draw()
 end
 
 function resetGame()
-	gWorld = World:new()
+	gWorld = World:new(gScreenWidth, gScreenHeight)
 end
 
 function love.mousepressed(x, y, button)
