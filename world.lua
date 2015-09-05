@@ -123,6 +123,13 @@ function World:draw()
 		love.graphics.print("Lost", 50, 50, 0, 5)
 		love.graphics.setColor(255, 255, 255, 255)
 	end
+	
+	if math.floor(love.timer.getTime()) % 2 == 0 then
+		love.graphics.setColor(255, 0, 0, 127)
+		love.graphics.circle("fill", 656, 54, 16)
+		love.graphics.setColor(255, 255, 255, 127)
+		love.graphics.print("REC", 680, 32)
+	end
 end
 
 function World:keyPressed(key)
