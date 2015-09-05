@@ -129,9 +129,11 @@ function World:keyPressed(key)
 	if key == 'w' then
 		self.player:jump()
 	end
-	
 	if key == 's' then
 		self.player:sausageDrop(self.world, self.sausages)
+	end
+	if key == 'e' then
+		self.player:eatSausage()
 	end
 end
 

@@ -1,5 +1,6 @@
 class "Player" {
 	sausages = 5;
+	boost = 0;
 }
 
 function Player:__init(world, x, y)
@@ -33,7 +34,12 @@ function Player:getPosition()
 end
 
 function Player:update(dt)
-	self.physics.body:applyForce(500 * math.pow(0.9, self.sausages), 0)
+	self.boost = self.boost - dt
+	local factor = 1
+	if self.boost >= 0 then
+		factor = 1.5
+	end
+	self.physics.body:applyForce(500 * math.pow(0.9, self.sausages) * factor, 0)
 end
 
 function Player:getSize()
@@ -50,7 +56,7 @@ end
 
 function Player:jump()
 	if #self.physics.body:getContactList() > 0 then
-		self.physics.body:applyLinearImpulse(400, 12000)
+		self.physics.body:applyLinearImpulse(0, 6000)
 	end
 end
 
@@ -72,4 +78,12 @@ end
 function Player:destroy()
 	self.physics.body:destroy()
 	self.physics.fixture:destroy()
+end
+
+function Player:eatSausage()
+	if self.sausages > 0 then
+		self.physics.body:applyForce(-500 * math.pow(0.9, self.sausages), 0)
+		self.sausages = self.sausages - 1
+		self.boost = 5.0
+	end
 end
