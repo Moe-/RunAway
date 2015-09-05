@@ -49,7 +49,7 @@ function World:update(dt)
 	
 	self.background:update(dt)
 	self.player:update(dt)
-	self.dog:update(dt, self.obstacles)
+	
 	
 	for i,v in pairs(self.sausages) do
 		v:update(dt)
@@ -58,10 +58,12 @@ function World:update(dt)
 	local posx, posy = self.player:getPosition()
 	self.offsetx = posx - self.width/2
 	
-	local dposx, dposy = self.player:getPosition()
+	local dposx, dposy = self.dog:getPosition()
 	
 	if dposx >= posx then
-		-- dog overtakes human - what to do?
+		self.dog:update(dt, self.obstacles, true)
+	else
+		self.dog:update(dt, self.obstacles, false)
 	end
 	
 	-- sausages update and respawn

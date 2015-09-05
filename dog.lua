@@ -34,15 +34,17 @@ function Dog:getPosition()
 	return self.physics.body:getX(), self.physics.body:getY()
 end
 
-function Dog:update(dt, obstacles)
-	self.physics.body:applyForce(500 * math.pow(1.2, self.strength - 1), 0)
+function Dog:update(dt, obstacles, wait)
+	if not wait then
+		self.physics.body:applyForce(500 * math.pow(1.2, self.strength - 1), 0)
+	end
 	
 	self.nextJump = self.nextJump - dt
 	if self.nextJump <= 0 then
 		local posx, posy = self:getPosition()
 		for i,v in pairs(obstacles) do
 			local oposx, oposy = v:getPosition()
-			if getDistance(posx, posy, oposx, oposy) < 300 then
+			if getDistance(posx, posy, oposx, oposy) < 300 and posx < oposx then
 				self.physics.body:applyLinearImpulse(0, 8000)
 				self.nextJump = 2.0
 				break
