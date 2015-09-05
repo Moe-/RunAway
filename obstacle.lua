@@ -24,6 +24,7 @@ function Obstacle:__init(world, x, y)
 	self.physics.body:setUserData(self)
 	self.physics.body:setFixedRotation(true)
 	self.physics.fixture:setUserData(self)
+	self.physics.fixture:setFriction(0.0)
 	
 	self.physics.fixture:setRestitution(0.3)
 

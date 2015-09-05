@@ -15,6 +15,7 @@ class "World" {
 	
 	numberSausages = 10;
 	numberObstacles = 10;
+	dogReturns = false;
 }
 
 function World:__init(width, height)
@@ -62,8 +63,10 @@ function World:update(dt)
 	
 	if dposx >= posx then
 		self.dog:update(dt, self.obstacles, true)
+		self.dogReturns = true
 	else
 		self.dog:update(dt, self.obstacles, false)
+		self.dogReturns = false
 	end
 	
 	-- sausages update and respawn
@@ -100,7 +103,7 @@ end
 function World:draw()
 	self.background:draw(self.offsetx, self.offsety)
 	self.player:draw(self.offsetx, self.offsety)
-	self.dog:draw(self.offsetx, self.offsety)
+	self.dog:draw(self.offsetx, self.offsety, self.dogReturns)
 	
 	for i,v in pairs(self.sausages) do
 		v:draw(self.offsetx, self.offsety)
