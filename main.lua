@@ -70,6 +70,14 @@ function love.mousepressed(x, y, button)
 	end
 end
 
+function love.mousemoved(x, y)
+	if gState == "menu" then
+		gMenu:mouseMoved(x, y)
+	elseif gState == "credits" then
+		gCredits:mouseMoved(x, y)
+	end
+end
+
 function love.mousereleased(x, y, button)
 
 end

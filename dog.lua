@@ -46,9 +46,9 @@ function Dog:update(dt, obstacles, wait)
 	self.timer = self.timer + (x * 0.05) * dt
 
 	if not wait then
-		self.physics.body:applyForce(500 * math.pow(1.2, self.strength - 1), 0)
+		self.physics.body:applyForce(400 * math.pow(1.2, self.strength - 1), 0)
 	else
-		self.physics.body:applyForce(-500 * math.pow(1.2, self.strength - 1), 0)
+		self.physics.body:applyForce(-400 * math.pow(1.2, self.strength - 1), 0)
 	end
 	
 	self.nextJump = self.nextJump - dt
@@ -56,8 +56,8 @@ function Dog:update(dt, obstacles, wait)
 		local posx, posy = self:getPosition()
 		for i,v in pairs(obstacles) do
 			local oposx, oposy = v:getPosition()
-			if getDistance(posx, posy, oposx, oposy) < 300 and posx < oposx then
-				self.physics.body:applyLinearImpulse(0, 8000)
+			if getDistance(posx, posy, oposx, oposy) < 500 and posx < oposx then
+				self.physics.body:applyLinearImpulse(0, 6000)
 				self.nextJump = 2.0
 				break
 			end

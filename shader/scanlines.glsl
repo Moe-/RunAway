@@ -1,7 +1,7 @@
 extern vec2 screenSize = vec2(800.0, 600.0);
 extern float strength = 2.0;
 extern float time = 0.0;
-extern float lineStrength = 0.75;
+extern float lineStrength = 0.9;
 
 vec4 effect(vec4 color, Image texture, vec2 texture_coords, vec2 pixel_coords){
 	vec2 pSize = 1.0 / screenSize;

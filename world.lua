@@ -25,7 +25,7 @@ function World:__init(width, height)
 	
 	self.ground = {}
   self.ground.body = love.physics.newBody(self.world, 0, 300/2)
-  self.ground.shape = love.physics.newRectangleShape(0, 300, 10000000, 50)
+  self.ground.shape = love.physics.newRectangleShape(0, 400, 10000000, 50)
   self.ground.fixture = love.physics.newFixture(self.ground.body, self.ground.shape)
 	self.ground.fixture:setFriction(0.0)
 	self.ground.body:setFixedRotation(true)
@@ -92,7 +92,7 @@ function World:update(dt)
 	end
 	
 	while self.numberObstacles > #self.obstacles do
-		table.insert(self.obstacles, Obstacle:new(self.world, posx + 500 + math.random(4500), 425))
+		table.insert(self.obstacles, Obstacle:new(self.world, posx + 500 + math.random(4500), 525))
 	end
 	
 	if self.lost == false then
@@ -119,13 +119,23 @@ function World:draw()
 end
 	
 function World:draw2()
+	love.graphics.setColor(0, 0, 0, 127)
+	love.graphics.print("You walked " .. math.floor(self.offsetx * 0.01 + 1) .. "m", 52, self.height - 48, 0, 0.75)
 	love.graphics.setColor(0, 255, 0, 191)
 	love.graphics.print("You walked " .. math.floor(self.offsetx * 0.01 + 1) .. "m", 50, self.height - 50, 0, 0.75)
 	love.graphics.setColor(255, 255, 255, 255)
 	
 	if self.lost then
-		love.graphics.setColor(255, 0, 0, 191)
-		love.graphics.printf("You Lose!", 0, 240, 800, "center")
+		love.graphics.setColor(0, 0, 0, 127)
+		love.graphics.printf("You Lost!", 2, 242, 800, "center")
+		
+		local f = 7
+		local r = 127 + math.sin((love.timer.getTime() * 0.25) * 5 * f + 90) * 127
+		local g = 127 + math.sin((love.timer.getTime() * 0.25) * 5 * f + 180) * 127
+		local b = 127 + math.sin((love.timer.getTime() * 0.25) * 5 * f + 270) * 127
+		
+		love.graphics.setColor(r, g, b, 191)
+		love.graphics.printf("You Lost!", 0, 240, 800, "center")
 		love.graphics.setColor(255, 255, 255, 255)
 	end
 	

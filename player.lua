@@ -17,7 +17,7 @@ function Player:__init(world, x, y)
 	self.physics = {}
   self.physics.body = love.physics.newBody(world, x, y, "dynamic")
   --self.physics.shape = love.physics.newCircleShape(32)
-  self.physics.shape = love.physics.newRectangleShape(0, 0, self.width, self.height)
+  self.physics.shape = love.physics.newRectangleShape(0, 0, self.width * 0.5, self.height)
 	self.physics.fixture = love.physics.newFixture(self.physics.body, self.physics.shape, 3)
 	self.physics.body:setUserData(self)
 	self.physics.body:setFixedRotation(true)
@@ -45,7 +45,7 @@ function Player:update(dt)
 	if self.boost >= 0 then
 		factor = 1.5
 	end
-	self.physics.body:applyForce(2000 * math.pow(0.9, self.sausages) * factor, 0)
+	self.physics.body:applyForce(1000 * math.pow(0.9, self.sausages) * factor, 0)
 end
 
 function Player:getSize()
@@ -62,7 +62,7 @@ end
 
 function Player:jump()
 	if #self.physics.body:getContactList() > 0 then
-		self.physics.body:applyLinearImpulse(0, 25000)
+		self.physics.body:applyLinearImpulse(0, 10000)
 	end
 end
 
