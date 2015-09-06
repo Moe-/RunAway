@@ -5,9 +5,13 @@ class "Obstacle" {
 function Obstacle:__init(world, x, y)
 	self.world = world
 	
-	local r = math.random(1, 2)
+	local r = math.random(1, 3)
 	if r == 1 then
 		self.image = love.graphics.newImage("gfx/shelf.png")
+	elseif r == 2 then
+		self.image = love.graphics.newImage("gfx/shelf2.png")
+	elseif r == 3 then
+		self.image = love.graphics.newImage("gfx/shelf3.png")
 	else
 		self.image = love.graphics.newImage("gfx/box.png")
 	end

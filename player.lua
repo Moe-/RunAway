@@ -3,16 +3,24 @@ class "Player" {
 	boost = 0;
 	timer = 0;
 	frame = 0;
+	jumping = false;
 }
 
 function Player:__init(world, x, y)
 	self.world = world
 	
 	self.image = love.graphics.newImage("gfx/ButcherRunAnimation.png")
-  self.image:setWrap("repeat", "repeat")
+	self.image:setWrap("repeat", "repeat")
 	self.width = self.image:getWidth() / 14
 	self.height = self.image:getHeight()
 	self.quad = love.graphics.newQuad(0, 0, self.width, self.height, self.image:getWidth(), self.image:getHeight())
+	
+	self.image2 = love.graphics.newImage("gfx/ButcherJumpAnimation.png")
+	self.image2:setWrap("repeat", "repeat")
+	self.width2 = self.image2:getWidth() / 10
+	self.height2 = self.image2:getHeight()
+	self.quad2 = love.graphics.newQuad(0, 0, self.width2, self.height2, self.image2:getWidth(), self.image2:getHeight())
+
 	
 	self.physics = {}
   self.physics.body = love.physics.newBody(world, x, y, "dynamic")
@@ -28,9 +36,15 @@ function Player:__init(world, x, y)
 end
 
 function Player:draw(offsetx, offsety)
-	self.frame = math.floor(self.timer) % 14
-	self.quad:setViewport(self.width * self.frame, 0, self.width, self.height)
-	love.graphics.draw(self.image, self.quad, self.physics.body:getX() - self.width/2 - offsetx, self.physics.body:getY() - self.height/2 - offsety)
+	if self.jumping then
+		self.frame = math.min(math.floor(self.timer), 9)
+		self.quad2:setViewport(self.width2 * self.frame, 0, self.width2, self.height2)
+		love.graphics.draw(self.image2, self.quad2, self.physics.body:getX() - self.width2/2 - offsetx, self.physics.body:getY() - self.height2/2 - offsety)
+	else
+		self.frame = math.floor(self.timer) % 14
+		self.quad:setViewport(self.width * self.frame, 0, self.width, self.height)
+		love.graphics.draw(self.image, self.quad, self.physics.body:getX() - self.width/2 - offsetx, self.physics.body:getY() - self.height/2 - offsety)
+	end
 end
 
 function Player:getPosition()
@@ -39,7 +53,17 @@ end
 
 function Player:update(dt)
 	x, y = self.physics.body:getLinearVelocity()
-	self.timer = self.timer + (x * 0.05) * dt
+	
+	if self.jumping then
+		self.timer = self.timer + 10 * dt
+	else
+		if x > 0 then
+			self.timer = self.timer + (math.max(2, x) * 0.05) * dt
+		elseif x < 0 then
+			self.timer = self.timer + (math.min(-2, x) * 0.05) * dt
+		end
+	end
+	
 	self.boost = self.boost - dt
 	local factor = 1
 	if self.boost >= 0 then
@@ -62,7 +86,11 @@ end
 
 function Player:jump()
 	if #self.physics.body:getContactList() > 0 then
-		self.physics.body:applyLinearImpulse(0, 10000)
+		self.physics.body:applyLinearImpulse(0, 12000)
+		
+		self.timer = 0
+		
+		self.jumping = true
 	end
 end
 

@@ -51,7 +51,9 @@ function love.draw()
 	if gState == "game" then
 		gWorld:draw2()
 	end
-	
+	if gWorld.lost then
+	love.postshader.addEffect("chromatic", math.sin(love.timer.getTime()*5) * 8, math.sin(love.timer.getTime()*4) * 3, math.sin(love.timer.getTime()*3) * 5, math.cos(love.timer.getTime()*7) * 3, math.cos(love.timer.getTime()*4) * -5, math.sin(love.timer.getTime()*9) * 7)
+	end
 	love.postshader.addEffect("scanlines")
 	love.postshader.draw()
 end

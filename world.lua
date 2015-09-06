@@ -1,4 +1,5 @@
 require('background')
+require('foreground')
 require('dog')
 require('player')
 require('sausage')
@@ -16,6 +17,7 @@ class "World" {
 	numberSausages = 10;
 	numberObstacles = 10;
 	dogReturns = false;
+	title = nil;
 }
 
 function World:__init(width, height)
@@ -37,18 +39,21 @@ function World:__init(width, height)
 	self.width = width
 	self.height = height
   self.background = Background:new(width, height)
+  self.foreground = Foreground:new(width, height)
 	self.player = Player:new(self.world, 300, 150)
 	self.dog = Dog:new(self.world, 50, 150)
 	
 	self.music = love.audio.newSource('sfx/fast_paced.ogg', 'static')
 	self.music:setLooping(true)
 	self.music:play()
+	self.title = love.graphics.newImage("gfx/record.png");
 end
 
 function World:update(dt)
 	self.world:update(dt)
 	
 	self.background:update(dt)
+	self.foreground:update(dt)
 	self.player:update(dt)
 	
 	
@@ -101,6 +106,9 @@ function World:update(dt)
 end
 
 function World:draw()
+	if self.lost then
+		--love.postshader.addEffect("bloom")
+	end
 	self.background:draw(self.offsetx, self.offsety)
 	self.player:draw(self.offsetx, self.offsety)
 	self.dog:draw(self.offsetx, self.offsety, self.dogReturns)
@@ -116,14 +124,20 @@ function World:draw()
 	for i, v in pairs(self.obstacles) do
 		v:draw(self.offsetx, self.offsety)
 	end
+	
+	self.foreground:draw(self.offsetx, self.offsety)
 end
 	
 function World:draw2()
+	love.graphics.setColor(255, 255, 255)
+	love.graphics.draw(self.title, 0, 548, 0, 2, 2)
 	love.graphics.setColor(0, 0, 0, 127)
-	love.graphics.print("You walked " .. math.floor(self.offsetx * 0.01 + 1) .. "m", 52, self.height - 48, 0, 0.75)
+	love.graphics.print("You ran " .. math.floor(self.offsetx * 0.01 + 1) .. "m", 52, self.height - 48, 0, 0.75)
 	love.graphics.setColor(0, 255, 0, 191)
-	love.graphics.print("You walked " .. math.floor(self.offsetx * 0.01 + 1) .. "m", 50, self.height - 50, 0, 0.75)
+	love.graphics.print("You ran " .. math.floor(self.offsetx * 0.01 + 1) .. "m", 50, self.height - 50, 0, 0.75)
+
 	love.graphics.setColor(255, 255, 255, 255)
+	love.graphics.print("S: " .. self.player.sausages, 650, 550, 0, 0.75)
 	
 	if self.lost then
 		love.graphics.setColor(0, 0, 0, 127)
@@ -140,8 +154,12 @@ function World:draw2()
 	end
 	
 	if math.floor(love.timer.getTime()) % 2 == 0 then
+		love.graphics.setColor(0, 0, 0, 127)
+		love.graphics.circle("fill", 657, 55, 16)
 		love.graphics.setColor(255, 0, 0, 127)
 		love.graphics.circle("fill", 656, 54, 16)
+		love.graphics.setColor(0, 0, 0, 127)
+		love.graphics.print("REC", 682, 34)
 		love.graphics.setColor(255, 255, 255, 127)
 		love.graphics.print("REC", 680, 32)
 	end
@@ -151,7 +169,7 @@ function World:keyPressed(key)
 	if key == 'w' then
 		self.player:jump()
 	end
-	if key == 's' then
+	if key == 's' or key == ' ' then
 		self.player:sausageDrop(self.world, self.sausages)
 	end
 	if key == 'e' then
@@ -206,6 +224,10 @@ function beginContact(a, b, coll)
 		elseif bUser:getType() == "Player" and aUser:getType() == "SausageItem" then
 			gWorld:playerGetsSausage(bUser, aUser)
 		end
+	end
+	
+	if (aUser ~= nil and aUser:getType() == "Player") or (bUser ~= nil and bUser:getType() == "Player") then
+		gWorld.player.jumping = false
 	end
 end
  
