@@ -16,6 +16,7 @@ function love.load()
 	end
 	love.graphics.setDefaultFilter("nearest", "nearest", 0)
 	FONT_MENU = love.graphics.newFont("font/font.ttf", 48)
+	FONT_SAUSAGE = love.graphics.newImageFont("gfx/sausage_numbers.png", "0123456789")
 	love.graphics.setFont(FONT_MENU)
 	math.randomseed( os.time() )
 	gScreenWidth, gScreenHeight = love.graphics.getDimensions( )

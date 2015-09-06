@@ -136,8 +136,12 @@ function World:draw2()
 	love.graphics.setColor(0, 255, 0, 191)
 	love.graphics.print("You ran " .. math.floor(self.offsetx * 0.01 + 1) .. "m", 50, self.height - 50, 0, 0.75)
 
+	love.graphics.setFont(FONT_SAUSAGE)
+	love.graphics.setColor(0, 0, 0, 127)
+	love.graphics.print(self.player.sausages, 702, 502, 0, 2, 2)
 	love.graphics.setColor(255, 255, 255, 255)
-	love.graphics.print("S: " .. self.player.sausages, 650, 550, 0, 0.75)
+	love.graphics.print(self.player.sausages, 700, 500, 0, 2, 2)
+	love.graphics.setFont(FONT_MENU)
 	
 	if self.lost then
 		love.graphics.setColor(0, 0, 0, 127)
