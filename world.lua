@@ -8,9 +8,9 @@ require('obstacle')
 require('sign')
 require('particle')
 
-gDogSpeedBase = 400
+gDogSpeedBase = 80
 gDogSpeedFactorBase = 1.2
-gPlayerSpeedBase = 1000
+gPlayerSpeedBase = 200
 gPlayerSpeedFactorBase = 0.9
 
 class "World" {
