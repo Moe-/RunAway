@@ -9,6 +9,7 @@ gScreenHeight = 0
 gWorld = nil
 gCredits = {}
 gState = "menu"
+gMusic = nil
 
 function love.load()
 	if arg[#arg] == "-debug" then 
@@ -22,6 +23,11 @@ function love.load()
 	gScreenWidth, gScreenHeight = love.graphics.getDimensions( )
 	resetGame()
 	gScreenCount = 0
+	
+	gMusic = love.audio.newSource('sfx/fast_paced.ogg', 'static')
+	gMusic:setLooping(true)
+	gMusic:play()
+
 end
 
 function love.update(dt)

@@ -2,6 +2,7 @@ class "Dog" {
 	nextJump = 0.0;
 	timer = 0;
 	frame = 0;
+	barkNext = 0;
 }
 
 function Dog:__init(world, x, y)
@@ -26,6 +27,18 @@ function Dog:__init(world, x, y)
 	
 	self.strength = 1
 	
+	self.bite = love.audio.newSource('sfx/dog_bite_01.wav', 'static')
+	self.bark = {
+		love.audio.newSource('sfx/dog_bark_01.wav', 'static'),
+		love.audio.newSource('sfx/dog_bark_02.wav', 'static'),
+		love.audio.newSource('sfx/dog_bark_03.wav', 'static'),
+		love.audio.newSource('sfx/dog_bark_04.wav', 'static'),
+		love.audio.newSource('sfx/dog_bark_05.wav', 'static'),
+		love.audio.newSource('sfx/dog_bark_06.wav', 'static'),
+		love.audio.newSource('sfx/dog_bark_07.wav', 'static'),
+		love.audio.newSource('sfx/dog_bark_08.wav', 'static'),
+		love.audio.newSource('sfx/dog_bark_09.wav', 'static')
+	}
 end
 
 function Dog:draw(offsetx, offsety, flip)
@@ -42,7 +55,7 @@ function Dog:getPosition()
 	return self.physics.body:getX(), self.physics.body:getY()
 end
 
-function Dog:update(dt, obstacles, wait)
+function Dog:update(dt, obstacles, wait, distanceToPlayer)
 	self.timer = self.timer + (x * 0.05) * dt
 
 	if not wait then
@@ -62,6 +75,18 @@ function Dog:update(dt, obstacles, wait)
 				break
 			end
 		end
+	end
+	
+	self.barkNext = self.barkNext - dt
+	if self.barkNext < 0 then
+		if distanceToPlayer < 300 then
+			self.barkNext = math.random() * 1.0
+		else
+			self.barkNext = math.random() * 5.0
+		end
+		local id = math.random(1, #self.bark)
+		self.bark[id]:rewind()
+		self.bark[id]:play()
 	end
 end
 
@@ -89,4 +114,9 @@ end
 function Dog:destroy()
 	self.physics.body:destroy()
 	self.physics.fixture:destroy()
+end
+
+function Dog:bitePlayer(player)
+	self.bite:rewind()
+	self.bite:play()
 end

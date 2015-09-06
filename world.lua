@@ -44,10 +44,11 @@ function World:__init(width, height)
 	self.player = Player:new(self.world, 300, 150)
 	self.dog = Dog:new(self.world, 50, 150)
 	
-	self.music = love.audio.newSource('sfx/fast_paced.ogg', 'static')
-	self.music:setLooping(true)
-	self.music:play()
 	self.title = love.graphics.newImage("gfx/record.png");
+	
+	self.atmosphere = love.audio.newSource('sfx/atmo_loop_supermarket.wav', 'static')
+	self.atmosphere:setLooping(true)
+	self.atmosphere:play()
 end
 
 function World:update(dt)
@@ -57,7 +58,6 @@ function World:update(dt)
 	self.foreground:update(dt)
 	self.player:update(dt)
 	
-	
 	for i,v in pairs(self.sausages) do
 		v:update(dt)
 	end
@@ -66,14 +66,15 @@ function World:update(dt)
 	self.offsetx = posx + (self.player.physics.body:getLinearVelocity() * 0.2) - self.width/2
 	
 	local dposx, dposy = self.dog:getPosition()
-	
+	local dogToPlayerDistance = getDistance(posx, posy, dposx, dposy)
 	if dposx >= posx then
-		self.dog:update(dt, self.obstacles, true)
+		self.dog:update(dt, self.obstacles, true, dogToPlayerDistance)
 		self.dogReturns = true
 	else
-		self.dog:update(dt, self.obstacles, false)
+		self.dog:update(dt, self.obstacles, false, dogToPlayerDistance)
 		self.dogReturns = false
 	end
+	self.player:dogBites(dt, dogToPlayerDistance)
 	
 	-- sausages update and respawn
 	for i, v in pairs(self.sausageItems) do
@@ -198,6 +199,10 @@ function World:dogEatsSausage(dog, sausage)
 end
 
 function World:dogEatsPlayer(dog, player)
+	if not self.lost then
+		dog:bitePlayer(player)
+		player:die()
+	end
 	self.lost = true
 end
 

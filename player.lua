@@ -4,6 +4,7 @@ class "Player" {
 	timer = 0;
 	frame = 0;
 	jumping = false;
+	dogNextBite = 0;
 }
 
 function Player:__init(world, x, y)
@@ -35,6 +36,15 @@ function Player:__init(world, x, y)
 	
 	self.particleEat = Particle:new(0, 0, 255, 128, 128, 2)
 	self.particleEat:stop()
+	
+	self.bitten = {
+		love.audio.newSource('sfx/man_bitten_01.wav', 'static'),
+		love.audio.newSource('sfx/man_bitten_02.wav', 'static')
+	}
+	self.death = {
+		love.audio.newSource('sfx/man_death_01.wav', 'static'),
+		love.audio.newSource('sfx/man_death_02.wav', 'static')
+	}
 end
 
 function Player:draw(offsetx, offsety)
@@ -125,5 +135,21 @@ function Player:eatSausage()
 		self.sausages = self.sausages - 1
 		self.boost = 5.0
 		self.particleEat:reset()
+	end
+end
+
+function Player:die()
+	local id = math.random(1, #self.death)
+	self.death[id]:rewind()
+	self.death[id]:play()
+end
+
+function Player:dogBites(dt, dogToPlayerDistance)
+	self.dogNextBite = self.dogNextBite - dt
+	if self.dogNextBite < 0 and dogToPlayerDistance < 200 then
+		self.dogNextBite = 1.0 + math.random() * 2
+		local id = math.random(1, #self.bitten)
+		self.bitten[id]:rewind()
+		self.bitten[id]:play()
 	end
 end
