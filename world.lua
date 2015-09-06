@@ -5,6 +5,7 @@ require('player')
 require('sausage')
 require('sausageitem')
 require('obstacle')
+require('sign')
 require('particle')
 
 class "World" {
@@ -96,13 +97,17 @@ function World:update(dt)
 	for i, v in pairs(self.obstacles) do
 		v:update(dt)
 		local sposx, sposy = v:getPosition()
-		if getDistance(posx, posy, sposx, sposy) > 5000 then
+		if posx > sposx and getDistance(posx, posy, sposx, sposy) > 2000 then
 			self.obstacles[i] = nil
 		end
 	end
 	
 	while self.numberObstacles > #self.obstacles do
-		table.insert(self.obstacles, Obstacle:new(self.world, posx + 500 + math.random(4500), 525))
+		if math.random() < 0.75 then
+			table.insert(self.obstacles, Obstacle:new(self.world, posx + 1500 + math.random(4500), 525))
+		else
+			table.insert(self.obstacles, Sign:new(self.world, posx + 500 + math.random(4500), 150))
+		end
 	end
 	
 	if self.lost == false then
