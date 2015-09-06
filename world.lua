@@ -140,17 +140,17 @@ end
 	
 function World:draw2()
 	love.graphics.setColor(255, 255, 255)
-	love.graphics.draw(self.title, 0, 548, 0, 2, 2)
+	love.graphics.draw(self.title, 0, 48, 0, 2, 2)
 	love.graphics.setColor(0, 0, 0, 127)
-	love.graphics.print("You ran " .. math.floor(self.offsetx * 0.01 + 1) .. "m", 52, self.height - 48, 0, 0.75)
+	love.graphics.print("You ran " .. math.floor(self.offsetx * 0.01 + 1) .. "m", 52, 48, 0, 0.75)
 	love.graphics.setColor(0, 255, 0, 191)
-	love.graphics.print("You ran " .. math.floor(self.offsetx * 0.01 + 1) .. "m", 50, self.height - 50, 0, 0.75)
+	love.graphics.print("You ran " .. math.floor(self.offsetx * 0.01 + 1) .. "m", 50, 50, 0, 0.75)
 
 	love.graphics.setFont(FONT_SAUSAGE)
 	love.graphics.setColor(0, 0, 0, 127)
-	love.graphics.print(self.player.sausages, 702, 502, 0, 2, 2)
+	love.graphics.print(self.player.sausages, 702, 102, 0, 2, 2)
 	love.graphics.setColor(255, 255, 255, 255)
-	love.graphics.print(self.player.sausages, 700, 500, 0, 2, 2)
+	love.graphics.print(self.player.sausages, 700, 100, 0, 2, 2)
 	love.graphics.setFont(FONT_MENU)
 	
 	if self.lost then
@@ -179,30 +179,33 @@ function World:draw2()
 	end
 	
 	-- draw distance to obstacles
-	love.graphics.setColor(255, 128, 0, 192)
 	local hudX = 250
-	local hudY = 50
+	local hudY = 550
+	love.graphics.setColor(0, 0, 0, 192)
+	love.graphics.line(50, hudY, self.width - 50, hudY)
+	love.graphics.setColor(255, 128, 0, 192)	
 	local posx, posy = self.player:getPosition()
-	love.graphics.circle("fill", hudX, hudY, 25, 100)
+	love.graphics.circle("fill", hudX, hudY, 20, 100)
 	for i, v in pairs(self.obstacles) do
 		local obsType = v:getObstacleType()
-		if obsType == 1 then
-			love.graphics.setColor(255, 128, 255, 192)
-		elseif obsType == 2 then
-			love.graphics.setColor(255, 0, 128, 192)
-		elseif obsType == 3 then
-			love.graphics.setColor(0, 255, 128, 192)
-		else
-			love.graphics.setColor(0, 128, 255, 192)
-		end
 		local oposx, oposy = v:getPosition()
 		local distance = (oposx - posx) / 3 
-		love.graphics.circle("fill", hudX + distance, hudY, 15, 100)
+		if obsType == 1 then --small
+			love.graphics.setColor(255, 128, 255, 192)
+			love.graphics.rectangle("fill",  hudX + distance, hudY + 10, 30, 20)
+		elseif obsType == 2 or obsType == 3 then --large
+			love.graphics.setColor(0, 255, 128, 192)
+			love.graphics.rectangle("fill",  hudX + distance, hudY + 0, 40, 30)
+		else --sign
+			love.graphics.setColor(0, 128, 255, 192)
+			love.graphics.rectangle("fill",  hudX + distance, hudY - 20, 30, 20)
+		end
 	end
 	local dposx, dposy = self.dog:getPosition()
 	local ddistance = (dposx - posx) / 3 
-	love.graphics.setColor(0, 128, 255, 192)
-	love.graphics.circle("fill", hudX + ddistance, hudY, 25, 100)
+	love.graphics.setColor(255, 64, 64, 192)
+	--love.graphics.circle("fill", hudX + ddistance, hudY, 25, 100)
+	love.graphics.polygon('fill', hudX + ddistance - 20, hudY + 15, hudX + ddistance + 20, hudY + 15, hudX + ddistance, hudY - 15)
 	love.graphics.setColor(255, 255, 255, 255)
 end
 
