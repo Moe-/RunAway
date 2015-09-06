@@ -169,6 +169,29 @@ function World:draw2()
 		love.graphics.setColor(255, 255, 255, 127)
 		love.graphics.print("REC", 680, 32)
 	end
+	
+	-- draw distance to obstacles
+	love.graphics.setColor(255, 128, 0, 192)
+	local hudX = 250
+	local hudY = 50
+	local posx, posy = self.player:getPosition()
+	love.graphics.circle("fill", hudX, hudY, 25, 100)
+	for i, v in pairs(self.obstacles) do
+		local obsType = v:getObstacleType()
+		if obsType == 1 then
+			love.graphics.setColor(255, 128, 255, 192)
+		elseif obsType == 2 then
+			love.graphics.setColor(255, 0, 128, 192)
+		elseif obsType == 3 then
+			love.graphics.setColor(0, 255, 128, 192)
+		else
+			love.graphics.setColor(0, 128, 255, 192)
+		end
+		local oposx, oposy = v:getPosition()
+		local distance = (oposx - posx) / 3 
+		love.graphics.circle("fill", hudX + distance, hudY, 15, 100)
+	end
+	love.graphics.setColor(255, 255, 255, 255)
 end
 
 function World:keyPressed(key)

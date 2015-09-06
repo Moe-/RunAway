@@ -1,5 +1,5 @@
 class "Obstacle" {
-
+	obsType = 0;
 }
 
 function Obstacle:__init(world, x, y)
@@ -15,6 +15,7 @@ function Obstacle:__init(world, x, y)
 	else
 		self.image = love.graphics.newImage("gfx/box.png")
 	end
+	self.obsType = r
   self.image:setWrap("repeat", "repeat")
   self.quad = love.graphics.newQuad(0, 0, self.image:getWidth(), self.image:getHeight(), self.image:getWidth(), self.image:getHeight())
   self.width = self.image:getWidth()
@@ -32,6 +33,10 @@ function Obstacle:__init(world, x, y)
 	
 	self.physics.fixture:setRestitution(0.3)
 
+end
+
+function Obstacle:getObstacleType()
+	return self.obsType
 end
 
 function Obstacle:draw(offsetx, offsety)

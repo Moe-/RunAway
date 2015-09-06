@@ -21,19 +21,19 @@ function Particle:__init(x, y, r, g, b, lifetime)
   --local i = love.graphics.newImage("gfx/particle.png")
   
   self.p = love.graphics.newParticleSystem(i, 256)
-  self.p:setEmissionRate          (20)
+  self.p:setEmissionRate          (50)
   self.p:setParticleLifetime      (2)
   self.p:setPosition              (0, 0)
   if lifetime < 1.0 then
     self.p:setDirection             (math.pi * 0.5)
   else
-    self.p:setDirection             (math.pi * 1.5)
+    self.p:setDirection             (math.pi * 2.0)
   end
   self.p:setSpread                (2)
   self.p:setSpeed                 (10, 20)
   self.p:setRadialAcceleration    (10)
   self.p:setTangentialAcceleration(10)
-  self.p:setSizes                 (0.1, 1)
+  self.p:setSizes                 (0.1, 2)
   self.p:setSizeVariation         (0.5)
   self.p:setRotation              (0)
   self.p:setSpin                  (math.pi)
