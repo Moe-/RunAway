@@ -211,6 +211,11 @@ function World:playerGetsSausage(player, sausageItem)
 	end
 end
 
+function World:clearAll()
+	self.world:destroy()
+end
+
+
 function beginContact(a, b, coll)
 	aUser = a:getUserData()
 	bUser = b:getUserData()

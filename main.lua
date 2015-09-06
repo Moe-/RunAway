@@ -6,7 +6,7 @@ require('lib/postshader')
 
 gScreenWidth = 0
 gScreenHeight = 0
-gWorld = {}
+gWorld = nil
 gCredits = {}
 gState = "menu"
 
@@ -60,6 +60,9 @@ function love.draw()
 end
 
 function resetGame()
+	if gWorld ~= nil then
+		gWorld:clearAll()
+	end
 	gWorld = World:new(gScreenWidth, gScreenHeight)
 	gMenu = Menu:new(gScreenWidth, gScreenHeight)
 	gCredits = Credits:new(gScreenWidth, gScreenHeight)

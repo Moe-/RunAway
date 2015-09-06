@@ -56,7 +56,7 @@ function Dog:update(dt, obstacles, wait)
 		local posx, posy = self:getPosition()
 		for i,v in pairs(obstacles) do
 			local oposx, oposy = v:getPosition()
-			if getDistance(posx, posy, oposx, oposy) < 500 and posx < oposx then
+			if getDistance(posx, posy, oposx, oposy) < 500 and ((not wait and posx < oposx) or (wait and posx > oposx)) then
 				self.physics.body:applyLinearImpulse(0, 6000)
 				self.nextJump = 2.0
 				break
