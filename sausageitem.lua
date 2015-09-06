@@ -1,11 +1,11 @@
 class "SausageItem" {
-
+	glowFactor = 1.0;
+	time = 0.0;
 }
 
 function SausageItem:__init(world, x, y)
 	self.world = world
 	
-	print(x, y)
   self.image = love.graphics.newImage("gfx/werf_wurst2.png")
   self.image:setWrap("repeat", "repeat")
   self.quad = love.graphics.newQuad(0, 0, self.image:getWidth(), self.image:getHeight(), self.image:getWidth(), self.image:getHeight())
@@ -28,7 +28,10 @@ function SausageItem:__init(world, x, y)
 end
 
 function SausageItem:draw(offsetx, offsety)
+	local glow = 255 * self.glowFactor
+	love.graphics.setColor(255, glow, glow, 255)
   love.graphics.draw(self.image, self.quad, self.physics.body:getX() - self.width/2 - offsetx, self.physics.body:getY() - self.height/2 - offsety)
+	love.graphics.setColor(255, 255, 255, 255)
 end
 
 function SausageItem:getPosition()
@@ -36,7 +39,8 @@ function SausageItem:getPosition()
 end
 
 function SausageItem:update(dt)
-
+	self.time = self.time + dt
+	self.glowFactor = 0.75 + 0.25 * math.sin(4 * self.time)
 end
 
 function SausageItem:getSize()

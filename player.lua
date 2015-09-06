@@ -37,6 +37,8 @@ function Player:__init(world, x, y)
 	
 	self.particleEat = Particle:new(0, 0, 192, 255, 128, 2)
 	self.particleEat:stop()
+	self.particleDeath = Particle:new(0, 0, 255, 64, 64, 2000)
+	self.particleDeath:stop()
 	
 	self.bitten = {
 		love.audio.newSource('sfx/man_bitten_01.wav', 'static'),
@@ -61,6 +63,7 @@ function Player:draw(offsetx, offsety)
 		love.graphics.draw(self.image, self.quad, self.physics.body:getX() - self.width/2 - offsetx, self.physics.body:getY() - self.height/2 - offsety)
 	end
 	self.particleEat:drawAt(self.physics.body:getX() + self.width/4 - offsetx, self.physics.body:getY() - self.height/4 - offsety)
+	self.particleDeath:drawAt(self.physics.body:getX() - offsetx, self.physics.body:getY() - offsety)
 end
 
 function Player:getPosition()
@@ -88,6 +91,7 @@ function Player:update(dt)
 	self.physics.body:applyForce(1000 * math.pow(0.9, self.sausages) * factor, 0)
 	
 	self.particleEat:update(dt)
+	self.particleDeath:update(dt)
 	self.playNextObstacleSound = self.playNextObstacleSound - dt
 end
 
@@ -146,6 +150,7 @@ function Player:die()
 	local id = math.random(1, #self.death)
 	self.death[id]:rewind()
 	self.death[id]:play()
+	self.particleDeath:reset()
 end
 
 function Player:dogBites(dt, dogToPlayerDistance)

@@ -63,7 +63,10 @@ function World:update(dt)
 	end
 	
 	local posx, posy = self.player:getPosition()
-	self.offsetx = posx + (self.player.physics.body:getLinearVelocity() * 0.2) - self.width/2
+	--self.offsetx = posx + (self.player.physics.body:getLinearVelocity() * 0.2) - self.width/2
+	local speedOffset = (self.player.physics.body:getLinearVelocity() * 0.2)
+	speedOffset = math.max(math.min(speedOffset, 250), -250)
+	self.offsetx = posx + speedOffset - self.width/2
 	
 	local dposx, dposy = self.dog:getPosition()
 	local dogToPlayerDistance = getDistance(posx, posy, dposx, dposy)
@@ -191,6 +194,10 @@ function World:draw2()
 		local distance = (oposx - posx) / 3 
 		love.graphics.circle("fill", hudX + distance, hudY, 15, 100)
 	end
+	local dposx, dposy = self.dog:getPosition()
+	local ddistance = (dposx - posx) / 3 
+	love.graphics.setColor(0, 128, 255, 192)
+	love.graphics.circle("fill", hudX + ddistance, hudY, 25, 100)
 	love.graphics.setColor(255, 255, 255, 255)
 end
 

@@ -39,6 +39,9 @@ function Dog:__init(world, x, y)
 		love.audio.newSource('sfx/dog_bark_08.wav', 'static'),
 		love.audio.newSource('sfx/dog_bark_09.wav', 'static')
 	}
+	
+	self.particleEat = Particle:new(0, 0, 255, 128, 192, 2)
+	self.particleEat:stop()
 end
 
 function Dog:draw(offsetx, offsety, flip)
@@ -49,6 +52,7 @@ function Dog:draw(offsetx, offsety, flip)
 	else
 		love.graphics.draw(self.image, self.quad, self.physics.body:getX() - self.width/2 - offsetx, self.physics.body:getY() - self.height/2 - offsety)
 	end
+	self.particleEat:drawAt(self.physics.body:getX() + 3 * self.width/8 - offsetx, self.physics.body:getY() - self.height/4 - offsety)
 end
 
 function Dog:getPosition()
@@ -88,6 +92,7 @@ function Dog:update(dt, obstacles, wait, distanceToPlayer)
 		self.bark[id]:rewind()
 		self.bark[id]:play()
 	end
+	self.particleEat:update(dt)
 end
 
 function Dog:getSize()
@@ -109,6 +114,7 @@ end
 function Dog:eatSausage(sausage)
 	self.physics.body:applyForce(-1250 * math.pow(1.2, self.strength), 0)
 	self.strength = self.strength + 1
+	self.particleEat:reset()
 end
 
 function Dog:destroy()

@@ -26,10 +26,14 @@ function Particle:__init(x, y, r, g, b, lifetime)
   self.p:setPosition              (0, 0)
   if lifetime < 1.0 then
     self.p:setDirection             (math.pi * 0.5)
+		self.p:setSpread                (2)
+	elseif lifetime > 100.0 then
+    self.p:setDirection             (math.pi * 1.0)
+		self.p:setSpread                (20)
   else
     self.p:setDirection             (math.pi * 2.0)
+		self.p:setSpread                (2)
   end
-  self.p:setSpread                (2)
   self.p:setSpeed                 (10, 20)
   self.p:setRadialAcceleration    (10)
   self.p:setTangentialAcceleration(10)
