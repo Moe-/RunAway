@@ -33,6 +33,8 @@ function Player:__init(world, x, y)
 
 	self.physics.fixture:setRestitution(0.3)
 	
+	self.particleEat = Particle:new(0, 0, 255, 128, 128, 2)
+	self.particleEat:stop()
 end
 
 function Player:draw(offsetx, offsety)
@@ -45,6 +47,7 @@ function Player:draw(offsetx, offsety)
 		self.quad:setViewport(self.width * self.frame, 0, self.width, self.height)
 		love.graphics.draw(self.image, self.quad, self.physics.body:getX() - self.width/2 - offsetx, self.physics.body:getY() - self.height/2 - offsety)
 	end
+	self.particleEat:drawAt(self.physics.body:getX() - offsetx, self.physics.body:getY() - offsety)
 end
 
 function Player:getPosition()
@@ -70,6 +73,8 @@ function Player:update(dt)
 		factor = 1.5
 	end
 	self.physics.body:applyForce(1000 * math.pow(0.9, self.sausages) * factor, 0)
+	
+	self.particleEat:update(dt)
 end
 
 function Player:getSize()
@@ -119,5 +124,6 @@ function Player:eatSausage()
 		self.physics.body:applyForce(-500 * math.pow(0.9, self.sausages), 0)
 		self.sausages = self.sausages - 1
 		self.boost = 5.0
+		self.particleEat:reset()
 	end
 end

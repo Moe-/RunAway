@@ -5,6 +5,7 @@ require('player')
 require('sausage')
 require('sausageitem')
 require('obstacle')
+require('particle')
 
 class "World" {
   width = 0;
