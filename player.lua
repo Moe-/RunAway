@@ -5,6 +5,7 @@ class "Player" {
 	frame = 0;
 	jumping = false;
 	dogNextBite = 0;
+	playNextObstacleSound = 0;
 }
 
 function Player:__init(world, x, y)
@@ -45,6 +46,8 @@ function Player:__init(world, x, y)
 		love.audio.newSource('sfx/man_death_01.wav', 'static'),
 		love.audio.newSource('sfx/man_death_02.wav', 'static')
 	}
+	
+	self.obstacleSfx = love.audio.newSource('sfx/man_hit_obstacle.wav', 'static')
 end
 
 function Player:draw(offsetx, offsety)
@@ -85,6 +88,7 @@ function Player:update(dt)
 	self.physics.body:applyForce(1000 * math.pow(0.9, self.sausages) * factor, 0)
 	
 	self.particleEat:update(dt)
+	self.playNextObstacleSound = self.playNextObstacleSound - dt
 end
 
 function Player:getSize()
@@ -151,5 +155,14 @@ function Player:dogBites(dt, dogToPlayerDistance)
 		local id = math.random(1, #self.bitten)
 		self.bitten[id]:rewind()
 		self.bitten[id]:play()
+	end
+end
+
+function Player:hitObstacle(obstacle)
+	local px, py = self.physics.body:getLinearVelocity()
+	if y < 10 and self.playNextObstacleSound < 0 then
+		self.obstacleSfx:rewind()
+		self.obstacleSfx:play()
+		self.playNextObstacleSound = 1.0
 	end
 end

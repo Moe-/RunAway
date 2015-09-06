@@ -217,6 +217,10 @@ function World:playerGetsSausage(player, sausageItem)
 	end
 end
 
+function World:playerHitsObstacle(player, obstacle)
+	player:hitObstacle(obstacle)
+end
+
 function World:clearAll()
 	self.world:destroy()
 end
@@ -238,6 +242,10 @@ function beginContact(a, b, coll)
 			gWorld:playerGetsSausage(aUser, bUser)
 		elseif bUser:getType() == "Player" and aUser:getType() == "SausageItem" then
 			gWorld:playerGetsSausage(bUser, aUser)
+		elseif aUser:getType() == "Player" and bUser:getType() == "Obstacle" then
+			gWorld:playerHitsObstacle(aUser, bUser)
+		elseif bUser:getType() == "Player" and aUser:getType() == "Obstacle" then
+			gWorld:playerHitsObstacle(bUser, aUser)
 		end
 	end
 	
