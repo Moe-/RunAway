@@ -88,7 +88,7 @@ function Player:update(dt)
 	if self.boost >= 0 then
 		factor = 1.5
 	end
-	self.physics.body:applyForce(1000 * math.pow(0.9, self.sausages) * factor, 0)
+	self.physics.body:applyForce(gPlayerSpeedBase * math.pow(gPlayerSpeedFactorBase, self.sausages) * factor, 0)
 	
 	self.particleEat:update(dt)
 	self.particleDeath:update(dt)

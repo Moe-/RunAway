@@ -63,9 +63,9 @@ function Dog:update(dt, obstacles, wait, distanceToPlayer)
 	self.timer = self.timer + (x * 0.05) * dt
 
 	if not wait then
-		self.physics.body:applyForce(400 * math.pow(1.2, self.strength - 1), 0)
+		self.physics.body:applyForce(gDogSpeedBase * math.pow(gDogSpeedFactorBase, self.strength - 1), 0)
 	else
-		self.physics.body:applyForce(-400 * math.pow(1.2, self.strength - 1), 0)
+		self.physics.body:applyForce(-gDogSpeedBase * math.pow(gDogSpeedFactorBase, self.strength - 1), 0)
 	end
 	
 	self.nextJump = self.nextJump - dt
