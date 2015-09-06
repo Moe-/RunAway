@@ -5,7 +5,7 @@ class "Sausage" {
 function Sausage:__init(world, x, y)
 	self.world = world
 	
-  self.image = love.graphics.newImage("gfx/sausage.png")
+  self.image = love.graphics.newImage("gfx/werf_wurst.png")
   self.image:setWrap("repeat", "repeat")
   self.quad = love.graphics.newQuad(0, 0, self.image:getWidth(), self.image:getHeight(), self.image:getWidth(), self.image:getHeight())
   self.width = self.image:getWidth()

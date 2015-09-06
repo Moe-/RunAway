@@ -1,15 +1,17 @@
 class "Dog" {
 	nextJump = 0.0;
+	timer = 0;
+	frame = 0;
 }
 
 function Dog:__init(world, x, y)
 	self.world = world
 	
-  self.image = love.graphics.newImage("gfx/dog.png")
+  self.image = love.graphics.newImage("gfx/DogRunAnimation.png")
   self.image:setWrap("repeat", "repeat")
-  self.quad = love.graphics.newQuad(0, 0, self.image:getWidth(), self.image:getHeight(), self.image:getWidth(), self.image:getHeight())
-  self.width = self.image:getWidth()
+  self.width = self.image:getWidth() / 8
   self.height = self.image:getHeight()
+  self.quad = love.graphics.newQuad(0, 0, self.width, self.height, self.image:getWidth(), self.image:getHeight())
 	
 	self.physics = {}
 	self.physics.body = love.physics.newBody(world, x, y, "dynamic")
@@ -27,6 +29,8 @@ function Dog:__init(world, x, y)
 end
 
 function Dog:draw(offsetx, offsety, flip)
+	self.frame = math.floor(self.timer) % 8
+	self.quad:setViewport(self.width * self.frame, 0, self.width, self.height)
 	if flip then
 		love.graphics.draw(self.image, self.quad, self.physics.body:getX() + self.width/2 - offsetx, self.physics.body:getY() - self.height/2 - offsety, 0, -1, 1)
 	else
@@ -39,6 +43,8 @@ function Dog:getPosition()
 end
 
 function Dog:update(dt, obstacles, wait)
+	self.timer = self.timer + (x * 0.05) * dt
+
 	if not wait then
 		self.physics.body:applyForce(500 * math.pow(1.2, self.strength - 1), 0)
 	else

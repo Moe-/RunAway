@@ -6,7 +6,7 @@ function SausageItem:__init(world, x, y)
 	self.world = world
 	
 	print(x, y)
-  self.image = love.graphics.newImage("gfx/sausage_item.png")
+  self.image = love.graphics.newImage("gfx/werf_wurst2.png")
   self.image:setWrap("repeat", "repeat")
   self.quad = love.graphics.newQuad(0, 0, self.image:getWidth(), self.image:getHeight(), self.image:getWidth(), self.image:getHeight())
   self.width = self.image:getWidth()

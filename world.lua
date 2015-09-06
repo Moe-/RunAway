@@ -57,7 +57,7 @@ function World:update(dt)
 	end
 	
 	local posx, posy = self.player:getPosition()
-	self.offsetx = posx - self.width/2
+	self.offsetx = posx + (self.player.physics.body:getLinearVelocity() * 0.2) - self.width/2
 	
 	local dposx, dposy = self.dog:getPosition()
 	
@@ -116,14 +116,16 @@ function World:draw()
 	for i, v in pairs(self.obstacles) do
 		v:draw(self.offsetx, self.offsety)
 	end
+end
 	
-	love.graphics.setColor(0, 255, 0, 255)
-	love.graphics.print("You survived " .. math.ceil(0.5 + 1000 * self.timePassed) / 1000 .. " seconds", 50, self.height - 50, 0, 0.75)
+function World:draw2()
+	love.graphics.setColor(0, 255, 0, 191)
+	love.graphics.print("You walked " .. math.floor(self.offsetx * 0.01 + 1) .. "m", 50, self.height - 50, 0, 0.75)
 	love.graphics.setColor(255, 255, 255, 255)
 	
 	if self.lost then
-		love.graphics.setColor(255, 0, 0, 255)
-		love.graphics.print("Lost", 50, 50, 0, 5)
+		love.graphics.setColor(255, 0, 0, 191)
+		love.graphics.printf("You Lose!", 0, 240, 800, "center")
 		love.graphics.setColor(255, 255, 255, 255)
 	end
 	

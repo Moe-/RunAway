@@ -15,7 +15,8 @@ end
 
 function Background:draw(offsetx, offsety)
 	love.graphics.setBackgroundColor(200, 255, 200, 255)
-  love.graphics.draw(self.image, self.quad, 0 - offsetx % self.width, 0 - offsety % self.height, 0, 4, 4)
+	love.graphics.draw(self.image, self.quad, 0 - offsetx % (self.width * 4), 0 - offsety % self.height, 0, 4, 4)
+	love.graphics.draw(self.image, self.quad, 0 - (offsetx % (self.width * 4)) + (self.width * 4), 0 - offsety % self.height, 0, 4, 4)
 end
 
 function Background:update(dt)

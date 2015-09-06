@@ -16,7 +16,7 @@ end
 
 function Credits:draw()
 	love.graphics.setColor(255, 255, 255)
-	love.graphics.printf("Moe\neggwithcheese\nPriorBlue\nR0Age0D\nPixelGuy", 0, 40, 800, "center")
+	love.graphics.printf("Moe\neggwithcheese\nPriorBlue\nR0Age0D\nPixelGuy\nPhaselock", 0, 40, 800, "center")
 
 	self.backButton:draw()
 end

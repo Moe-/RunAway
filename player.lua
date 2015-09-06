@@ -1,16 +1,18 @@
 class "Player" {
 	sausages = 5;
 	boost = 0;
+	timer = 0;
+	frame = 0;
 }
 
 function Player:__init(world, x, y)
 	self.world = world
 	
-	self.image = love.graphics.newImage("gfx/butcher_sketch.png")
+	self.image = love.graphics.newImage("gfx/ButcherRunAnimation.png")
   self.image:setWrap("repeat", "repeat")
-  self.quad = love.graphics.newQuad(0, 0, self.image:getWidth(), self.image:getHeight(), self.image:getWidth(), self.image:getHeight())
-  self.width = self.image:getWidth()
-  self.height = self.image:getHeight()
+	self.width = self.image:getWidth() / 14
+	self.height = self.image:getHeight()
+	self.quad = love.graphics.newQuad(0, 0, self.width, self.height, self.image:getWidth(), self.image:getHeight())
 	
 	self.physics = {}
   self.physics.body = love.physics.newBody(world, x, y, "dynamic")
@@ -20,13 +22,15 @@ function Player:__init(world, x, y)
 	self.physics.body:setUserData(self)
 	self.physics.body:setFixedRotation(true)
 	self.physics.fixture:setUserData(self)
-  
+
 	self.physics.fixture:setRestitution(0.3)
 	
 end
 
 function Player:draw(offsetx, offsety)
-  love.graphics.draw(self.image, self.quad, self.physics.body:getX() - self.width/2 - offsetx, self.physics.body:getY() - self.height/2 - offsety)
+	self.frame = math.floor(self.timer) % 14
+	self.quad:setViewport(self.width * self.frame, 0, self.width, self.height)
+	love.graphics.draw(self.image, self.quad, self.physics.body:getX() - self.width/2 - offsetx, self.physics.body:getY() - self.height/2 - offsety)
 end
 
 function Player:getPosition()
@@ -34,12 +38,14 @@ function Player:getPosition()
 end
 
 function Player:update(dt)
+	x, y = self.physics.body:getLinearVelocity()
+	self.timer = self.timer + (x * 0.05) * dt
 	self.boost = self.boost - dt
 	local factor = 1
 	if self.boost >= 0 then
 		factor = 1.5
 	end
-	self.physics.body:applyForce(500 * math.pow(0.9, self.sausages) * factor, 0)
+	self.physics.body:applyForce(2000 * math.pow(0.9, self.sausages) * factor, 0)
 end
 
 function Player:getSize()
@@ -56,7 +62,7 @@ end
 
 function Player:jump()
 	if #self.physics.body:getContactList() > 0 then
-		self.physics.body:applyLinearImpulse(0, 6000)
+		self.physics.body:applyLinearImpulse(0, 25000)
 	end
 end
 

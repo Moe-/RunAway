@@ -34,6 +34,7 @@ function love.update(dt)
 end
 
 function love.draw()
+	love.window.setTitle(love.timer.getFPS() .. " FPS")
 	love.postshader.setBuffer("render")
 
 	if gState == "menu" then
@@ -44,7 +45,13 @@ function love.draw()
 		gWorld:draw()
 	end
 
+	love.postshader.addEffect("wind", math.max(0, math.min(math.floor(gWorld.player.physics.body:getLinearVelocity() * 0.1) - 16, 32)), 0)
 	love.postshader.addEffect("tiltshift", 2, 2)
+	
+	if gState == "game" then
+		gWorld:draw2()
+	end
+	
 	love.postshader.addEffect("scanlines")
 	love.postshader.draw()
 end
